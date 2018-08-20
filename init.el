@@ -223,6 +223,8 @@
       :init
       (exec-path-from-shell-initialize)
       :ensure t)
+    (setq mac-command-modifier 'meta)
+    (setq mac-option-modifier nil)
     (set-frame-parameter nil 'fullscreen 'maximized))
 
 
@@ -254,3 +256,20 @@
 ;  :config
 ;  (ranger-override-dired-mode t)
 ;  :ensure t)
+
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  :ensure t)
+
+;(defun rg-rust-overview () 
+;  (interactive)
+;  (compilation-start
+;   (mapconcat 'identity
+;              (append (list ripgrep-executable)
+;                      ripgrep-arguments
+;		      `("-e \"struct.*\{\" -e \"^impl\" -e \"fn.*\(\" -e \"mod\"")
+;		      (buffer-file-name)
+;		      )
+;	      " ")
+;   'ripgrep-search-mode))
