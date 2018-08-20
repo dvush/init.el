@@ -22,14 +22,19 @@
   :ensure t)
 
 (use-package evil
+  :ensure t
   :init
   (setq evil-want-C-u-scroll t)
-  (evil-mode 1)
+  (setq evil-want-integration nil)
   :config
   (defalias #'forward-evil-word #'forward-evil-symbol)
-  (delete 'term-mode evil-insert-state-modes)
-  (add-to-list 'evil-emacs-state-modes 'term-mode)
-  :ensure t)
+  (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 (use-package undo-tree
   :config
@@ -78,7 +83,7 @@
       (condition-case nil
 	  (lsp-cquery-enable)
 	(user-error nil)))
-    (add-hook 'c-mode-common-hook #'cquery//enable))
+    (add-hook 'c-mode-common-hook #'lsp-cquery-enable))
 
 (use-package ivy-xref
   :ensure t
@@ -249,6 +254,8 @@
     (interactive)
     (revert-buffer :ignore-auto :noconfirm))
 
+(use-package dtrt-indent
+  :ensure t)
 
 ;(use-package ranger
 ;  :config
