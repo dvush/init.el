@@ -25,7 +25,7 @@
   :ensure t
   :init
   (setq evil-want-C-u-scroll t)
-  (setq evil-want-integration nil)
+  (setq evil-want-integration t)
   :config
   (defalias #'forward-evil-word #'forward-evil-symbol)
   (evil-mode 1))
@@ -66,24 +66,24 @@
 )
 
 (use-package lsp-mode
-  :ensure t)
-
-(use-package lsp-ui
-  :ensure t)
+  :ensure t
+  :commands lsp
+  :config
+  (use-package lsp-clients))
 
 (use-package company-lsp
   :config
   (push 'company-lsp company-backends)
   :ensure t)
 
-(use-package cquery
-    :commands lsp-cquery-enable
-    :init
-    (defun cquery//enable ()
-      (condition-case nil
-	  (lsp-cquery-enable)
-	(user-error nil)))
-    (add-hook 'c-mode-common-hook #'lsp-cquery-enable))
+;(use-package cquery
+    ;:commands lsp-cquery-enable
+    ;:init
+    ;(defun cquery//enable ()
+      ;(condition-case nil
+	  ;(lsp-cquery-enable)
+	;(user-error nil)))
+    ;(add-hook 'c-mode-common-hook #'lsp-cquery-enable))
 
 (use-package ivy-xref
   :ensure t
@@ -132,7 +132,8 @@
 ; RUST
 
 (use-package rust-mode
-  :ensure t)
+  :ensure t
+  :init (add-hook 'rust-mode-hook 'lsp))
 
 (use-package cargo
   :init
@@ -149,26 +150,26 @@
   :ensure t)
 
 
-(use-package lsp-rust
-  :ensure t
-  :config
-  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
-  (add-hook 'rust-mode-hook #'lsp-rust-enable)
-  (add-hook 'rust-mode-hook #'flycheck-mode))
+;(use-package lsp-rust
+  ;:ensure t
+  ;:config
+  ;(setq lsp-rust-rls-command '("rustup" "run" "rls"))
+  ;(add-hook 'rust-mode-hook #'lsp-rust-enable)
+  ;(add-hook 'rust-mode-hook #'flycheck-mode))
 
-(use-package racer
-  :init
+;(use-package racer
+;  :init
 ;  (general-define-key
 ;   :prefix "SPC"
 ;   :states 'normal
 ;   :keymaps 'racer-mode-map
 ;   "d" 'racer-find-definition
 ;   "h" 'racer-describe)
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode)
-  (add-to-list 'evil-emacs-state-modes 'racer-help-mode)
-  :ensure t)
+;  (add-hook 'rust-mode-hook #'racer-mode)
+;  (add-hook 'racer-mode-hook #'eldoc-mode)
+;  (add-hook 'racer-mode-hook #'company-mode)
+;  (add-to-list 'evil-emacs-state-modes 'racer-help-mode)
+;  :ensure t)
 
 
 ;(use-package flycheck-rust
@@ -191,24 +192,24 @@
 (use-package projectile-ripgrep
   :ensure t)
 
-(use-package counsel-projectile
-  :config
-  (counsel-projectile-mode)
-  (defun contextual-counsel-rg ()
-    (if (projectile-project-p) ;; detect if current buffer is in a project
-	(general-define-key
-	 :prefix "SPC"
-	 :states 'normal
-	 :keymaps 'projectile-mode-map
-	 "s" 'counsel-projectile-rg)
-      (general-define-key
-       :prefix "SPC"
-       :states 'normal
-       :keymaps 'projectile-mode-map
-       "s" 'counsel-rg)
-      ))
-  (add-hook 'projectile-mode-hook #'contextual-counsel-rg)
-  :ensure t)
+;(use-package counsel-projectile
+;  :config
+;  (counsel-projectile-mode)
+;  (defun contextual-counsel-rg ()
+;    (if (projectile-project-p) ;; detect if current buffer is in a project
+;	(general-define-key
+;	 :prefix "SPC"
+;	 :states 'normal
+;	 :keymaps 'projectile-mode-map
+;	 "s" 'counsel-projectile-rg)
+;      (general-define-key
+;       :prefix "SPC"
+;       :states 'normal
+;       :keymaps 'projectile-mode-map
+;       "s" 'counsel-rg)
+;      ))
+;  (add-hook 'projectile-mode-hook #'contextual-counsel-rg)
+;  :ensure t)
 
 (general-define-key
   :prefix "SPC"
